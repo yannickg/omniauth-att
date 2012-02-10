@@ -41,9 +41,15 @@ class SinatraApp < Sinatra::Base
 get '/auth/:provider/callback' do
     db[:access_token] = request.env['omniauth.auth']['credentials']['token']
     @access_token = db[:access_token]
+    JSON.pretty_generate(request.env['omniauth.auth'])
+end
+
+get '/auth/:provider/callback.bak' do
+    db[:access_token] = request.env['omniauth.auth']['credentials']['token']
+    @access_token = db[:access_token]
     erb "<h1>#{params[:provider]}</h1>
-         <pre>#{JSON.pretty_generate(request.env['omniauth.auth'])}</pre>"
-  end
+    <pre>#{JSON.pretty_generate(request.env['omniauth.auth'])}</pre>"
+end
   
   get '/auth/failure' do
     erb "<h1>Authentication Failed:</h1><h3>message:<h3> <pre>#{params}</pre>"
